@@ -229,7 +229,7 @@ public class Editor
             else
             {
                 // Determine how much content could be shown on the screen
-                int len = rows[fileRow].Render.Size - colOffset;
+                int len = rows[fileRow].Render.Length - colOffset;
                 if (len < 0)
                 {
                     len = 0;

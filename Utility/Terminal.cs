@@ -21,7 +21,7 @@ public class Terminal
         public uint c_lflag;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-        public byte c_cc;
+        public byte[] c_cc;
     }
 
     /// <summary>
