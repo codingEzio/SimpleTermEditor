@@ -459,4 +459,67 @@ public class Editor
 
         return fileRows;
     }
+
+    private void SetStatusMessage(string message)
+    {
+        statusMessage = message;
+        statusMessageTime = DateTime.Now;
+    }
+
+    private void DrawStatusBar(StringBuilder sb)
+    {
+        // An ANSI escape code called 'reverse video mode'
+        // Swapping the background and foreground colors of the text
+        sb.Append("\x1b[7m");
+
+        string leftSectionStatus = $"{(string.IsNullOrEmpty(filename) ? "[No Name]" : filename)}" +
+                        " - " +
+                        $"{rows.Count} lines {(dirty > 0 ? "(modified)" : "")}";
+        string rightSectionStatus = $"{cursorY + 1}/{rows.Count}";
+
+        // Truncate the status message if it's too long then do the appending
+        if (leftSectionStatus.Length > screenCols)
+        {
+            leftSectionStatus = leftSectionStatus.Substring(0, screenCols);
+        }
+        sb.Append(leftSectionStatus);
+
+        // Basically make sure the right section is properly right-aligned
+        // Until it reaches that, it would keep adding spaces.
+        while (leftSectionStatus.Length < screenCols)
+        {
+            if ((screenCols - rightSectionStatus.Length) == rightSectionStatus.Length)
+            {
+                sb.Append(rightSectionStatus);
+
+                break;
+            }
+            else
+            {
+                sb.Append(' ');
+                leftSectionStatus += ' ';
+            }
+        }
+
+        // Reset any text formatting it has before and move to the next line
+        sb.Append("\x1b[m\r\n");
+    }
+
+    private void DrawMessageBar(StringBuilder sb)
+    {
+        // An ANSI escape code called 'reverse video mode'
+        // Swapping the background and foreground colors of the text
+        sb.Append("\x1b[K");
+
+        if ((DateTime.Now - statusMessageTime).TotalSeconds < 5)
+        {
+            int msgLen = statusMessage.Length;
+            if (msgLen > screenCols)
+            {
+                msgLen = screenCols;
+            }
+
+            sb.Append(statusMessage.Substring(0, msgLen));
+        }
+    }
 }
