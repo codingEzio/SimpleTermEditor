@@ -190,4 +190,63 @@ public class Editor
 
         quitConfirmTimes = EDITOR_QUIT_CONFIRM_TIMES;
     }
+
+    private void DrawRows(StringBuilder sb)
+    {
+        for (int y = 0; y < screenRows; y++)
+        {
+            int fileRow = y + rowOffset;
+            if (fileRow >= rows.Count)
+            {
+                // Show welcome message if the file is empty
+                if (rows.Count == 0 && y == screenRows / 3)
+                {
+                    string welcome = "Welcome to Simple Term Editor!";
+
+                    // Truncate the welcome message if it's too long
+                    if (welcome.Length > screenCols)
+                    {
+                        welcome = welcome.Substring(0, screenCols);
+                    }
+
+                    // Add padding to make sure that it's centered
+                    int padding = (screenCols - welcome.Length) / 2;
+                    if (padding > 0)
+                    {
+                        sb.Append('~');
+                        padding--;
+                    }
+
+                    sb.Append(' ', padding);
+                    sb.Append(welcome);
+                }
+                // Otherwise fill up the empty lines with '~'s
+                else
+                {
+                    sb.Append('~');
+                }
+            }
+            else
+            {
+                // Determine how much content could be shown on the screen
+                int len = rows[fileRow].Render.Size - colOffset;
+                if (len < 0)
+                {
+                    len = 0;
+                }
+
+                if (len > screenCols)
+                {
+                    len = screenCols;
+                }
+
+                sb.Append(rows[fileRow].Render.Substring(colOffset, len));
+            }
+        }
+
+        // Clear the line
+        sb.Append("\x1b[K");
+
+        sb.Append("\r\n");
+    }
 }
