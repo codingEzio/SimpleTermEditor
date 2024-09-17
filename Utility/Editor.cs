@@ -1,4 +1,5 @@
 using System.Text;
+using SimpleTermEditor.Entity.Enum;
 
 namespace SimpleTermEditor.Utility;
 
@@ -96,7 +97,58 @@ public class Editor
 
         switch (keyInfo.Key)
         {
-            case ControlKey.S:
+            case ConsoleKey.Enter:
+                InsertNewline();
+                break;
+
+            case ConsoleKey.Backspace:
+            case ConsoleKey.Delete:
+                DeleteChar();
+                break;
+
+            case ConsoleKey.UpArrow:
+                MoveCursor(Direction.Up);
+                break;
+
+            case ConsoleKey.DownArrow:
+                MoveCursor(Direction.Down);
+                break;
+
+            case ConsoleKey.LeftArrow:
+                MoveCursor(Direction.Left);
+                break;
+
+            case ConsoleKey.RightArrow:
+                MoveCursor(Direction.Right);
+                break;
+
+            case ConsoleKey.Home:
+                cursorX = 0;
+                break;
+
+            case ConsoleKey.End:
+                cursorX = (cursorY < rows.Count) ? rows[cursorY].Size : 0;
+                break;
+
+            case ConsoleKey.PageUp:
+            case ConsoleKey.PageDown:
+                if (keyInfo.Key == ConsoleKey.PageUp)
+                {
+                    cursorY = rowOffset;
+                } else if (keyInfo.Key == ConsoleKey.PageDown)
+                {
+                    cursorY = rowOffset  + screenRows - 1;
+                }
+
+                int times = screenRows;
+                while (times-- > 0)
+                {
+                    MoveCursor(keyInfo.Key == ConsoleKey.PageUp ? Direction.Up : Direction.Down);
+                }
+
+                break;
+
+            case ConsoleKey.S:
                 if ((keyInfo.Modifiers & ConsoleModifiers.Control) != 0)
                 {
                     Save();
