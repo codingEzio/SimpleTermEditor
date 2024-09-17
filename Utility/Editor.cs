@@ -249,4 +249,43 @@ public class Editor
 
         sb.Append("\r\n");
     }
+
+    private void Scroll()
+    {
+        // The letters were the visible screen
+        // The numbers and symbols were the boundaries
+        //   @ 00000000000000 #
+        //   @ AAAAAAAAAAAAAA #
+        //   @ BBBBBBBBBBBBBB #
+        //   @ CCCCCCCCCCCCCC #
+        //   @ 11111111111111 #
+
+        // Cursor moved above the visible screen, scroll up
+        // Like you moved above the A,B,C to the '0' row
+        if (cursorY < rowOffset)
+        {
+            rowOffset = cursorY;
+        }
+
+        // Cursor moved below the visible screen, scroll down
+        // Like you moved below the A,B,C to the '1' row
+        if (cursorY >= rowOffset + screenRows)
+        {
+            rowOffset = cursorY - screenRows + 1;
+        }
+
+        // Cursor moved left of the visible screen, scroll left
+        // Like you moved left of the A,B,C to the '@' column
+        if (cursorX < colOffset)
+        {
+            colOffset = cursorX;
+        }
+
+        // Cursor moved right of the visible screen, scroll right
+        // Like you moved right of the A,B,C to the '#' column
+        if (cursorX >= colOffset + screenCols)
+        {
+            colOffset = cursorX - screenCols + 1;
+        }
+    }
 }
