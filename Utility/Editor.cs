@@ -404,7 +404,7 @@ public class Editor
         dirty++;
     }
 
-    private void Open(string filename)
+    public void Open(string filename)
     {
         filename = this.filename;
 
@@ -460,7 +460,7 @@ public class Editor
         return fileRows;
     }
 
-    private void SetStatusMessage(string message)
+    public void SetStatusMessage(string message)
     {
         statusMessage = message;
         statusMessageTime = DateTime.Now;
