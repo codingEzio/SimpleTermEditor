@@ -403,4 +403,60 @@ public class Editor
 
         dirty++;
     }
+
+    private void Open(string filename)
+    {
+        filename = this.filename;
+
+        try
+        {
+            string[] fileRows = File.ReadAllLines(filename);
+            foreach (string line in fileRows)
+            {
+                InsertRow(numRows, line);
+            }
+
+            dirty = 0;
+        }
+        catch (Exception)
+        {
+            SetStatusMessage($"Cannot open file");
+        }
+    }
+
+    private void Save()
+    {
+        if (string.IsNullOrEmpty(filename))
+        {
+            filename = Prompt("Save as: ");
+            if (string.IsNullOrEmpty(filename))
+            {
+                SetStatusMessage("Save aborted");
+                return;
+            }
+        }
+
+        try
+        {
+            File.WriteAllLines(filename, GetRowsAsString());
+
+            dirty = 0;
+            SetStatusMessage($"{rows.Count} lines written to disk");
+        }
+        catch (Exception e)
+        {
+            SetStatusMessage($"Cannot save! I/O error: {e.Message}");
+        }
+    }
+
+    private List<string> GetRowsAsString()
+    {
+        List<string> fileRows = new List<string>();
+        foreach (EditorRow row in rows)
+        {
+            fileRows.Add(row.Chars);
+        }
+
+        return fileRows;
+    }
 }
