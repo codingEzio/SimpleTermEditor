@@ -288,4 +288,61 @@ public class Editor
             colOffset = cursorX - screenCols + 1;
         }
     }
+
+    private void MoveCursor(Direction direction)
+    {
+        switch (direction)
+        {
+            case Direction.Left:
+                // Move cursor to the left if not reaching the start
+                if (cursorX != 0)
+                {
+                    cursorX--;
+                }
+                //  Move the cursor to the end of the previous line if reaching the start
+                else if (cursorY > 0)
+                {
+                    cursorY--;
+                    cursorX = rows[cursorY].Size;
+                }
+                break;
+
+            case Direction.Right:
+                // Move cursor to the right if not reaching the end
+                if (cursorY < rows.Count)
+                {
+                    cursorX++;
+                }
+                // Move the cursor to the start of the next line if exceeding
+                else if (cursorX == rows[cursorY].Size)
+                {
+                    cursorY ++;
+                    cursorX = 0;
+                }
+                break;
+
+            case Direction.Up:
+                // If not the first row of the file, move up one
+                if (cursorY != 0)
+                {
+                    cursorY--;
+                }
+                break;
+
+            case Direction.Down:
+                // If still not the end of the file, move down one
+                if (cursorY < rows.Count - 1)
+                {
+                    cursorY++;
+                }
+
+                break;
+        }
+
+        int rowLength = (cursorY < rows.Count) ? rows[cursorY].Size : 0;
+        if (cursorX >= rowLength)
+        {
+            cursorX = rowLength;
+        }
+    }
 }
