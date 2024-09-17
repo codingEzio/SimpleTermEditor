@@ -4,6 +4,8 @@ namespace SimpleTermEditor.Utility;
 
 public class Editor
 {
+    #region VariableAndConstants
+
     /// <summary>
     ///  Meant to convert the tab size to the number of spaces
     /// </summary>
@@ -32,6 +34,8 @@ public class Editor
 
     List<EditorRow> rows = new List<EditorRow>();
     Terminal terminal = new Terminal();
+
+    #endregion
 
     public Editor()
     {
@@ -73,5 +77,28 @@ public class Editor
         sb.Append("\x1b[?25h");
 
         Console.Write(sb.ToString());
+    }
+
+    /// <summary>
+    ///  Handle all the keypresses happened in the terminal
+    ///  Either it's a character to be in, or an action to be taken
+    /// </summary>
+    public void ProcessKeypress()
+    {
+        var keyInfo = Console.ReadKey(true);
+
+        // Enter, Backspace+Delete
+        // UpArrow, DownArrow, LeftArrow, RightArrow
+        // Home, End
+        // PageUp, PageDown
+        // Ctrl+Q, Ctrl+S, Ctrl+F
+        // Normally inserting characters
+
+        switch (keyInfo.Key)
+        {
+            default:
+                InsertChar(keyInfo.KeyChar);
+                break;
+        }
     }
 }
