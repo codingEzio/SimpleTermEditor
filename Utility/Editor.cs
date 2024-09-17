@@ -449,6 +449,32 @@ public class Editor
         }
     }
 
+    private void Find()
+    {
+        string query = Prompt("Search: ") ?? string.Empty;
+        if (string.IsNullOrEmpty(query))
+        {
+            return;
+        }
+
+        for (int i = 0; i < rows.Count; i++)
+        {
+            int index = rows[i].Render.IndexOf(
+                query,
+                StringComparison.OrdinalIgnoreCase
+            );
+
+            if (index >= 0)
+            {
+                cursorY = i;
+                cursorX = index;
+                rowOffset = rows.Count;
+
+                break;
+            }
+        }
+    }
+
     private List<string> GetRowsAsString()
     {
         List<string> fileRows = new List<string>();
