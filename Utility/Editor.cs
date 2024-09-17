@@ -96,9 +96,46 @@ public class Editor
 
         switch (keyInfo.Key)
         {
+            case ControlKey.S:
+                if ((keyInfo.Modifiers & ConsoleModifiers.Control) != 0)
+                {
+                    Save();
+                }
+
+                break;
+
+            case ConsoleKey.F:
+                if ((keyInfo.Modifiers & ConsoleModifiers.Control) != 0)
+                {
+                    Find();
+                }
+
+                break;
+
+            case ConsoleKey.Q:
+                if ((keyInfo.Modifiers & ConsoleModifiers.Control) != 0)
+                {
+                    if (dirty > 0 && quitConfirmTimes > 0)
+                    {
+                        Console.WriteLine($"WARNING: You have unsaved changes. Press Ctrl-Q {quitConfirmTimes} times again to quit.");
+                        quitConfirmTimes--;
+
+                        return;
+                    }
+
+                    Console.Clear();
+                    Environment.Exit(0);
+                }
+
+                break;
+
+
             default:
                 InsertChar(keyInfo.KeyChar);
+
                 break;
         }
+
+        quitConfirmTimes = EDITOR_QUIT_CONFIRM_TIMES;
     }
 }
