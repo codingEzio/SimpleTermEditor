@@ -345,4 +345,62 @@ public class Editor
             cursorX = rowLength;
         }
     }
+
+    private void InsertChar(char c)
+    {
+        // If the cursor is at the end of the row, insert a new one
+        if (cursorY == rows.Count)
+        {
+            InsertRow(rows.Count, string.Empty);
+        }
+
+        // Insert the character right after where the cursor is
+        rows[cursorY].InsertChar(cursorX, c);
+
+        // Move the cursor to the right one character
+        cursorX++;
+
+        // Changes made
+        dirty++;
+    }
+
+    private void DeleteChar()
+    {
+        // The end of the file
+        if (cursorY == rows.Count)
+        {
+            return;
+        }
+        // The very start of the file
+        if (cursorX == 0 && cursorY == 0)
+        {
+            return;
+        }
+
+        // Cursor is not at the leftmost position
+        //   Delete the character right before the cursor
+        //   Move the cursor to the left one character
+        if (cursorX > 0)
+        {
+            rows[cursorY].DeleteChar(cursorX - 1);
+            cursorX--;
+        }
+        // Cursor is at the leftmost position
+        //   Get the length of the previous row (for appending)
+        //   Append the line where u at to the previous row
+        //   Update the content of the previous row
+        //   Delete the line where u at
+        //   Move the cursor up one row
+        else
+        {
+            cursorX = rows[cursorY - 1].Size;
+            rows[cursorY - 1].Chars += rows[cursorY].Chars;
+
+            UpdateRow(rows[cursorY - 1]);
+            DeleteRow(cursorY);
+            cursorY--;
+        }
+
+        dirty++;
+    }
 }
