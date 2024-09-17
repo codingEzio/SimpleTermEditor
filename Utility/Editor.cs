@@ -404,6 +404,70 @@ public class Editor
         dirty++;
     }
 
+    /// <summary>
+    ///  Prompt the user to input stuff to save/find (bottom of the screen)
+    /// </summary>
+    /// <param name="prompt"></param>
+    /// <returns></returns>
+    private string Prompt(string prompt)
+    {
+        Console.CursorVisible = true;
+        SetStatusMessage(prompt);
+        RefreshScreen();
+
+        StringBuilder input = new StringBuilder();
+        while (true)
+        {
+            RefreshScreen();
+            var keyInfo = Console.ReadKey(true);
+
+            // All these handles the input happened at the bottom (like 'Save As')
+            switch (keyInfo.Key)
+            {
+                // A scenario where you input the filename (for saving) and ENTER
+                case ConsoleKey.Enter:
+                    if (input.Length > 0)
+                    {
+                        Console.CursorVisible = false;
+
+                        SetStatusMessage("");
+                        return input.ToString();
+                    }
+
+                    break;
+
+                // A scenario where you input the filename and edit it
+                case ConsoleKey.Backspace:
+                case ConsoleKey.Delete:
+                    if (input.Length > 0)
+                    {
+                        input.Length--;
+                    }
+
+                    break;
+
+                // Nullify the input if you press ESC (not savin', gotta writin')
+                case ConsoleKey.Escape:
+                    Console.CursorVisible = false;
+                    SetStatusMessage("");
+
+                    return null;
+
+                // Keep appending the input as long as it ain't control characters
+                default:
+                    if (!char.IsControl(keyInfo.KeyChar))
+                    {
+                        input.Append(keyInfo.KeyChar);
+                    }
+
+                    break;
+            }
+
+            SetStatusMessage($"{prompt}{input}");
+        }
+
+    }
+
     public void Open(string filename)
     {
         filename = this.filename;
