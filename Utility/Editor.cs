@@ -522,4 +522,69 @@ public class Editor
             sb.Append(statusMessage.Substring(0, msgLen));
         }
     }
+
+    private void InsertNewline()
+    {
+        // If the cursor is at the very start of the line (or the file)
+        if (cursorX == 0)
+        {
+            InsertRow(cursorX, string.Empty);
+        }
+        // If the cursor is NOT at the start the of the line
+        else
+        {
+            // Grab content from the cursor to the end of the line
+            string line = rows[cursorY].Chars.Substring(cursorX);
+
+            // Grab content from the beginning of the line to the cursor
+            rows[cursorY].Chars = rows[cursorY].Chars.Substring(0, cursorX);
+
+            // Update the original line with the left half
+            UpdateRow(rows[cursorY]);
+
+            // Insert and update the new line with the right half
+            InsertRow(cursorY + 1, line);
+
+            // Move the cursor to the beginning of the next line
+            cursorY++;
+            cursorX = 0;
+
+            dirty++;
+        }
+    }
+
+    public void InsertRow(int at, string s)
+    {
+        if (at < 0 || at > rows.Count)
+        {
+            return;
+        }
+
+        // Insert the new row with attributes and update the number of rows
+        rows.Insert(at, new EditorRow(s));
+        numRows++;
+
+        dirty++;
+    }
+
+    public void DeleteRow(int at)
+    {
+        if (at < 0 || at >= rows.Count)
+        {
+            return;
+        }
+
+        rows.RemoveAt(at);
+        numRows--;
+
+        dirty++;
+    }
+
+    public void UpdateRow(EditorRow row)
+    {
+        // Update the remaining attributes of an editor row
+        // For the transformed text and the length of the text
+        row.Render = row.Chars.Replace("\t", new string(' ', EDITOR_TAB_STOP));
+        row.Size = row.Render.Length;
+    }
 }
