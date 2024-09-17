@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace SimpleTermEditor.Utility;
 
 public class Editor
@@ -39,5 +41,37 @@ public class Editor
         // Aww.. my sweet(ly registered) Multicast Delegates
         // Basically it disables the raw mode when the program exits
         AppDomain.CurrentDomain.ProcessExit += (s, e) => terminal.DisableRawMode();
+    }
+
+    /// <summary>
+    ///  Update all the essential content on the screen
+    ///  - the rows
+    ///  - the cursor
+    ///  - the status bar
+    ///  - the message bar
+    /// </summary>
+    public void RefreshScreen()
+    {
+        Scroll();
+
+        StringBuilder sb = new StringBuilder();
+
+        // Hide the cursor
+        sb.Append("\x1b[?25l");
+
+        // Move the cursor to start of the line (== press HOME)
+        sb.Append("\x1b[H");
+
+        DrawRows(sb);
+        DrawStatusBar(sb);
+        DrawMessageBar(sb);
+
+        // Move the cursor to the specific position
+        sb.Append($"\x1b[{cursorY - rowOffset + 1};{cursorX - colOffset + 1}H");
+
+        // Make the cursor visible
+        sb.Append("\x1b[?25h");
+
+        Console.Write(sb.ToString());
     }
 }
