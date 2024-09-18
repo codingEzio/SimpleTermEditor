@@ -634,13 +634,13 @@ public class Editor
 
             // Insert and update the new line with the right half
             InsertRow(cursorY + 1, line);
-
-            // Move the cursor to the beginning of the next line
-            cursorY++;
-            cursorX = 0;
-
-            dirty++;
         }
+
+        // Move the cursor to the beginning of the next line
+        cursorY++;
+        cursorX = 0;
+
+        dirty++;
     }
 
     public void InsertRow(int at, string s)
