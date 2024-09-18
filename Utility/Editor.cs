@@ -513,7 +513,7 @@ public class Editor
         }
     }
 
-    private void Find()
+    private void Find(bool ignoreCase = true)
     {
         string query = Prompt("Search: ") ?? string.Empty;
         if (string.IsNullOrEmpty(query))
@@ -525,7 +525,7 @@ public class Editor
         {
             int index = rows[i].Render.IndexOf(
                 query,
-                StringComparison.OrdinalIgnoreCase
+                ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal
             );
 
             if (index >= 0)
