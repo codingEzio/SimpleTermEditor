@@ -88,12 +88,18 @@ public class Editor
     {
         var keyInfo = Console.ReadKey(true);
 
+        // Normal characters
         // Enter, Backspace+Delete
         // UpArrow, DownArrow, LeftArrow, RightArrow
         // Home, End
         // PageUp, PageDown
         // Ctrl+Q, Ctrl+S, Ctrl+F
-        // Normally inserting characters
+
+        if (keyInfo.KeyChar >= 32 && keyInfo.KeyChar < 127)
+        {
+            InsertChar(keyInfo.KeyChar);
+            return;
+        }
 
         switch (keyInfo.Key)
         {
@@ -178,12 +184,6 @@ public class Editor
                     Console.Clear();
                     Environment.Exit(0);
                 }
-
-                break;
-
-
-            default:
-                InsertChar(keyInfo.KeyChar);
 
                 break;
         }
