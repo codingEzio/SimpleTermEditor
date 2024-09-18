@@ -18,6 +18,10 @@
 - [ ] Configurable *Find* (like *Ignore Case or not*)
 - [ ] Syntax Highlighting (this might take a while..)
 
+## Status
+
+> Now I'm quite familiar with the project, I could start trying to integrate my own ideas into this editor implementation. I've also found a project that quite peaked my interest, which is [*Matt Duck*](https://www.mattduck.com/)'s improved version of the [implementation](https://github.com/mattduck/kilo). Hell yeah!
+
 ## Credit
 
 - [Build Your Own Text Editor](https://viewsourcecode.org/snaptoken/kilo/) <sup>[src](https://github.com/snaptoken/kilo-tutorial)</sup>
