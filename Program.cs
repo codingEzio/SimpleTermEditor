@@ -19,9 +19,9 @@ public class Program
 
         // The guidance message at the bottom
         editor.SetStatusMessage("HELP: "
-            + "Ctrl-S: Save"
-            + "Ctrl-Q: Quit"
-            + "Ctrl-F: Find"
+            + "Ctrl-S: Save | "
+            + "Ctrl-Q: Quit | "
+            + "Ctrl-F: Find "
         );
 
         // Refresh the screen and process non-writing operations
