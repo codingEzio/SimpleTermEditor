@@ -422,45 +422,38 @@ public class Editor
             var keyInfo = Console.ReadKey(true);
 
             // All these handles the input happened at the bottom (like 'Save As')
-            switch (keyInfo.Key)
+
+            // A scenario where you input the filename (for saving) and ENTER
+            if (keyInfo.Key == ConsoleKey.Enter)
             {
-                // A scenario where you input the filename (for saving) and ENTER
-                case ConsoleKey.Enter:
-                    if (input.Length > 0)
-                    {
-                        Console.CursorVisible = false;
-
-                        SetStatusMessage("");
-                        return input.ToString();
-                    }
-
-                    break;
-
-                // A scenario where you input the filename and edit it
-                case ConsoleKey.Backspace:
-                case ConsoleKey.Delete:
-                    if (input.Length > 0)
-                    {
-                        input.Length--;
-                    }
-
-                    break;
-
-                // Nullify the input if you press ESC (not savin', gotta writin')
-                case ConsoleKey.Escape:
+                if (input.Length > 0)
+                {
                     Console.CursorVisible = false;
+
                     SetStatusMessage("");
+                    return input.ToString();
+                }
+            }
+            // A scenario where you input the filename and edit it
+            else if (keyInfo.Key == ConsoleKey.Backspace || keyInfo.Key == ConsoleKey.Delete)
+            {
+                if (input.Length > 0)
+                {
+                    input.Length--;
+                }
+            }
+            // Nullify the input if you press ESC (not savin', gotta writin')
+            else if (keyInfo.Key == ConsoleKey.Escape)
+            {
+                Console.CursorVisible = false;
+                SetStatusMessage("");
 
-                    return null;
-
-                // Keep appending the input as long as it ain't control characters
-                default:
-                    if (!char.IsControl(keyInfo.KeyChar))
-                    {
-                        input.Append(keyInfo.KeyChar);
-                    }
-
-                    break;
+                return null;
+            }
+            // Keep appending the input as long as it ain't control characters
+            else if (!char.IsControl(keyInfo.KeyChar))
+            {
+                input.Append(keyInfo.KeyChar);
             }
 
             SetStatusMessage($"{prompt}{input}");
