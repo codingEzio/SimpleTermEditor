@@ -31,7 +31,7 @@ public class Editor
     string statusMessage = string.Empty;
 
     DateTime statusMessageTime = DateTime.Now;
-    private int quitConfirmTimes = EDITOR_QUIT_CONFIRM_TIMES;
+    int quitConfirmTimes = EDITOR_QUIT_CONFIRM_TIMES;
 
     List<EditorRow> rows = new List<EditorRow>();
     Terminal terminal = new Terminal();
@@ -242,12 +242,12 @@ public class Editor
 
                 sb.Append(rows[fileRow].Render.Substring(colOffset, len));
             }
-        }
 
         // Clear the line
         sb.Append("\x1b[K");
 
         sb.Append("\r\n");
+    }
     }
 
     private void Scroll()
@@ -468,9 +468,9 @@ public class Editor
 
     }
 
-    public void Open(string filename)
+    public void Open(string fileName)
     {
-        filename = this.filename;
+        filename = fileName;
 
         try
         {
