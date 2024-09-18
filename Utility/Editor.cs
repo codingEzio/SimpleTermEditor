@@ -243,11 +243,11 @@ public class Editor
                 sb.Append(rows[fileRow].Render.Substring(colOffset, len));
             }
 
-        // Clear the line
-        sb.Append("\x1b[K");
+            // Clear the line
+            sb.Append("\x1b[K");
 
-        sb.Append("\r\n");
-    }
+            sb.Append("\r\n");
+        }
     }
 
     private void Scroll()
